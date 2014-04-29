@@ -5,7 +5,7 @@
 		<html>
 
 			<head>
-				<title>CD Catalog</title>
+				<title>E4Logsis analysis result</title>
 				<style type="text/css">
 					table
 					{

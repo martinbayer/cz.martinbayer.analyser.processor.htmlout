@@ -19,6 +19,10 @@ import javax.xml.transform.stream.StreamSource;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.di.UISynchronize;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.program.Program;
+import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.FrameworkUtil;
 
 import cz.martinbayer.analyser.impl.ConcreteE4LogsisLog;
@@ -35,7 +39,7 @@ public class HTMLOutputProcessor extends OutputProcessor<ConcreteE4LogsisLog> {
 	private static final long serialVersionUID = 3253139226567433220L;
 
 	private static Logger log = Activator.getLogger();
-	private XMLE4LogsisLogData<XMLE4LogsisLog> data;
+	private transient XMLE4LogsisLogData<XMLE4LogsisLog> data;
 	private File selectedFile;
 
 	@Override
@@ -92,5 +96,23 @@ public class HTMLOutputProcessor extends OutputProcessor<ConcreteE4LogsisLog> {
 					.append(getName());
 		}
 		return null;
+	}
+
+	@Override
+	protected void showResult() {
+		UISynchronize sync = Activator.getEclipseContext().get(
+				UISynchronize.class);
+		sync.asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				MessageDialog.openInformation(
+						Display.getDefault().getActiveShell(),
+						"HTML export result",
+						"Results exported to file "
+								+ selectedFile.getAbsolutePath());
+				Program.launch(selectedFile.getAbsolutePath());
+			}
+		});
 	}
 }

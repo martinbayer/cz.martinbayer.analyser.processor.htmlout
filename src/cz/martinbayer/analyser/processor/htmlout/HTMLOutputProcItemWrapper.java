@@ -40,7 +40,7 @@ public class HTMLOutputProcItemWrapper implements
 
 	@Override
 	public void mouseDoubleClicked(MouseEvent e) {
-		paletteItem.openDialog(logic);
+		paletteItem.openDialog((HTMLOutputProcLogic) getProcessorLogic());
 	}
 
 	@Override
@@ -48,6 +48,7 @@ public class HTMLOutputProcItemWrapper implements
 		return new HTMLOutputProcItemWrapper();
 	}
 
+	@Override
 	@Inject
 	public void setContext(IEclipseContext ctx) {
 		Activator.setEclipseContext(ctx);
